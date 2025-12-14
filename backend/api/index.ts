@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { initDatabase } from '../src/database/init';
 import queryRoutes from '../src/routes/query.routes';
@@ -40,5 +40,16 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Root handler
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'VisualSQL Backend API',
+    endpoints: ['/api/health', '/api/modules', '/api/query', '/api/exercises', '/api/schemas']
+  });
+});
+
+// Export for Vercel serverless
 export default app;
+
 
