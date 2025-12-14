@@ -10,11 +10,112 @@
 
 ## 🎯 Features
 
-### Interactive Learning
+### 🎓 Core Learning Features
 - **Step-by-step visualizations** showing how SQL queries execute
-- **Real-time query execution** on sample databases
+- **Real-time query execution** on sample databases  
 - **Animated demonstrations** of JOINs, aggregations, filters, and more
 - **Progressive learning path** from basics to advanced topics
+- **14 comprehensive modules** covering all SQL concepts
+
+### 🚀 Advanced Features
+
+#### 1. **Query Collections Manager**
+- Create and organize query collections
+- Save favorite queries with notes
+- Import/export collections as JSON
+- Full CRUD operations with search
+
+#### 2. **Learning Dashboard & Analytics**
+- Track queries executed and success rate
+- XP system with levels and achievements
+- Study time tracking and streak counters
+- Progress visualization with charts
+- Recent activity timeline
+
+#### 3. **Custom Themes System**
+- 8 professional themes: Light, Dark, Dracula, Nord, Monokai, Solarized, GitHub Dark
+- Live theme preview with color palettes
+- Syntax highlighting customization
+- Persistent theme selection
+
+#### 4. **Interactive Challenges & Leaderboard**
+- 6 SQL challenges (Easy, Medium, Hard)
+- Countdown timer with speed bonuses
+- 8 achievements to unlock
+- Progressive hints system
+- Attempt tracking and stats
+
+#### 5. **Spaced Repetition Flashcards**
+- SM-2 algorithm for optimal learning
+- 56 cards across 6 decks
+- 4-level difficulty rating (Again/Hard/Good/Easy)
+- Review scheduling and mastery tracking
+- Session statistics
+
+#### 6. **Certificate Generation**
+- Professional certificate design
+- Download as PNG (html2canvas)
+- Share via native API
+- Category filtering
+- Completion stats and certificate IDs
+
+#### 7. **ER Diagram Visualization**
+- Interactive SVG node graph
+- Shows tables, columns, data types, keys
+- Relationship lines with cardinality (1:1, 1:N, N:M)
+- Zoom/pan controls
+- Click to highlight tables
+
+#### 8. **SQL Query Diff Tool**
+- Side-by-side query comparison
+- Split and unified view modes
+- Line-by-line diff with color coding
+- Diff statistics (additions/deletions/unchanged)
+- Compare with sample solutions
+
+#### 9. **AI Query Assistant** 🤖
+- Powered by Google Gemini API (free tier)
+- 4 modes: Chat, Explain, Optimize, Convert
+- Natural language to SQL conversion
+- Query explanation and error analysis
+- Optimization suggestions
+- Conversation history
+
+#### 10. **Version Control for Queries**
+- Git-like version control
+- Commit with messages
+- Branch create/checkout/delete/merge
+- Revert to previous versions
+- Compare versions side-by-side
+- Tag important versions
+
+#### 11. **Multi-Tab Query Editor**
+- IDE-like tab management
+- Unsaved changes indicator
+- Keyboard shortcuts (Ctrl+T, Ctrl+W)
+- Right-click context menu
+- Double-click to rename
+- Auto-save per tab
+
+#### 12. **Data Visualizations** 📊
+- Chart.js integration
+- 5 chart types: Bar, Line, Area, Pie, Doughnut
+- Auto-detect numeric/string columns
+- Export charts as PNG
+- Interactive tooltips
+
+#### 13. **Code Snippets Library**
+- 30+ pre-built SQL patterns
+- 8 categories: SELECT, JOIN, Subqueries, Aggregation, Window Functions, CTEs, DML, Utilities
+- Custom snippet creation
+- Search and filter
+- Import/export snippets
+
+#### 14. **Enhanced Export Options**
+- Export to CSV (UTF-8 with BOM)
+- Export to JSON (with metadata)
+- Export to Excel (XLSX format)
+- Proper quote escaping and formatting
 
 ### Comprehensive SQL Coverage
 - **Basics**: SELECT, FROM, WHERE, ORDER BY, LIMIT, DISTINCT
@@ -49,7 +150,10 @@
 - Tailwind CSS for styling
 - Monaco Editor for SQL editing
 - Framer Motion for animations
-- Axios for API calls
+- Chart.js for data visualizations
+- Google Gemini AI integration
+- SheetJS (xlsx) for Excel exports
+- html2canvas for certificate generation
 
 **Backend:**
 - Node.js with Express and TypeScript
@@ -119,8 +223,8 @@ VisualSQL/
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/visualsql.git
-   cd visualsql
+   git clone https://github.com/navaraja20/Visual_SQL.git
+   cd Visual_SQL
    ```
 
 2. **Install dependencies:**
@@ -182,9 +286,17 @@ npm start
 2. **Choose a Module**: Select a topic from basics to advanced
 3. **Read the Lesson**: Study the e-lecture content on each topic
 4. **Try Sample Queries**: Load and execute pre-built example queries
-5. **Visualize Execution**: Watch step-by-step animations showing how queries work
-6. **Practice**: Complete exercises to test your understanding
-7. **Track Progress**: Monitor your completion rate across all exercises
+5. **Use Multi-Tab Editor**: Open multiple queries simultaneously with Ctrl+T
+6. **Visualize Execution**: Watch step-by-step animations showing how queries work
+7. **View Data Charts**: Visualize results with interactive charts
+8. **Use Code Snippets**: Browse 30+ SQL patterns for quick reference
+9. **Get AI Help**: Ask the AI assistant to explain, optimize, or convert queries
+10. **Save to Collections**: Organize your favorite queries
+11. **Practice with Challenges**: Test skills with timed challenges
+12. **Study with Flashcards**: Use spaced repetition for better retention
+13. **Track Progress**: Monitor completion rate and earn achievements
+14. **Export Results**: Download as CSV, JSON, or Excel
+15. **Earn Certificates**: Complete modules and download certificates
 
 ### For Instructors/Contributors
 
@@ -419,7 +531,13 @@ MIT License - feel free to use this project for educational purposes.
 
 ## 📧 Contact
 
+Created by **navaraja20** - Feel free to reach out!
+
 For questions, issues, or suggestions, please open an issue on GitHub.
+
+## 🌟 Show Your Support
+
+Give a ⭐️ if this project helped you learn SQL!
 
 ---
 
