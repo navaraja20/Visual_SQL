@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
 import ThemeSelector from '@/components/ThemeSelector';
 import dynamic from 'next/dynamic';
+import { API_ENDPOINTS } from '@/config/api';
 
 const SQLEditor = dynamic(() => import('@/components/SQLEditor'), { ssr: false });
 
@@ -211,7 +212,7 @@ export default function Challenges() {
     setAttempts(prev => prev + 1);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/query/execute`, {
+      const response = await fetch(API_ENDPOINTS.query, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

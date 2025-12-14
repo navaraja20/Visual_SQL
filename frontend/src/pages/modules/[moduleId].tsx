@@ -13,6 +13,7 @@ import SchemaExplorer from '@/components/SchemaExplorer';
 import KeyboardShortcuts from '@/components/KeyboardShortcuts';
 import ShareModal from '@/components/ShareModal';
 import HintsPanel from '@/components/HintsPanel';
+import { API_ENDPOINTS } from '@/config/api';
 import CollectionsManager from '@/components/CollectionsManager';
 import ThemeSelector from '@/components/ThemeSelector';
 import QueryDiff from '@/components/QueryDiff';
@@ -306,7 +307,7 @@ export default function ModulePage() {
 
   const fetchModule = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/modules/${moduleId}`);
+      const response = await fetch(`${API_ENDPOINTS.modules}/${moduleId}`);
       const data = await response.json();
       setModule(data);
       
@@ -330,7 +331,7 @@ export default function ModulePage() {
     setRowCount(null);
     
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/query/execute`, {
+      const response = await fetch(API_ENDPOINTS.query, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -462,7 +463,7 @@ export default function ModulePage() {
 
       const countQuery = `SELECT COUNT(*) as count FROM ${fromMatch[1]}`;
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/query/execute`, {
+      const response = await fetch(API_ENDPOINTS.query, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

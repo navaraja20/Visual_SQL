@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useTheme } from '@/contexts/ThemeContext';
+import { API_ENDPOINTS } from '@/config/api';
 
 const SQLEditor = dynamic(() => import('@/components/SQLEditor'), { ssr: false });
 
@@ -36,7 +37,7 @@ export default function PracticePage() {
 
   const fetchExercises = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/exercises`);
+      const response = await fetch(API_ENDPOINTS.exercises);
       const data = await response.json();
       setExercises(data);
     } catch (error) {
@@ -68,7 +69,7 @@ export default function PracticePage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/exercises/${selectedExercise.id}/submit`,
+        `${API_ENDPOINTS.exercises}/${selectedExercise.id}/submit`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import { API_ENDPOINTS } from '@/config/api';
 
 const ERDiagram = dynamic(() => import('./ERDiagram'), { ssr: false });
 
@@ -40,7 +41,7 @@ export default function SchemaExplorer({ schema, onInsertTable }: SchemaExplorer
   const fetchSchema = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/schema/${schema}`);
+      const response = await fetch(`${API_ENDPOINTS.schemas}?schemaName=${schema}`);
       const data = await response.json();
       setTables(data.tables || []);
     } catch (error) {
@@ -58,7 +59,7 @@ export default function SchemaExplorer({ schema, onInsertTable }: SchemaExplorer
     setLoadingSample(tableName);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/query/execute`,
+        API_ENDPOINTS.query,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

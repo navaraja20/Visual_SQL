@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
+import { API_ENDPOINTS } from '@/config/api';
 
 interface Module {
   id: string;
@@ -24,7 +25,7 @@ export default function HomePage() {
 
   const fetchModules = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/modules`);
+      const response = await fetch(API_ENDPOINTS.modules);
       const data = await response.json();
       setModules(data);
     } catch (error) {
