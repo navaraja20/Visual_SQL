@@ -11,32 +11,15 @@ export async function getDatabase(): Promise<Database> {
       SQL = await initSqlJs();
     }
     
-    const dbPath = process.env.DATABASE_PATH || './data/visualsql.db';
-    const dbDir = path.dirname(dbPath);
-    
-    // Create directory if it doesn't exist
-    if (!fs.existsSync(dbDir)) {
-      fs.mkdirSync(dbDir, { recursive: true });
-    }
-    
-    // Try to load existing database
-    if (fs.existsSync(dbPath)) {
-      const buffer = fs.readFileSync(dbPath);
-      db = new SQL.Database(buffer);
-    } else {
-      db = new SQL.Database();
-    }
+    // Use in-memory database for serverless (Vercel)
+    db = new SQL.Database();
   }
   return db!;
 }
 
 export function saveDatabase(): void {
-  if (db) {
-    const dbPath = process.env.DATABASE_PATH || './data/visualsql.db';
-    const data = db.export();
-    const buffer = Buffer.from(data);
-    fs.writeFileSync(dbPath, buffer);
-  }
+  // No-op for serverless - database is in-memory only
+  // In production, you would use a proper database service
 }
 
 export async function initDatabase(): Promise<void> {

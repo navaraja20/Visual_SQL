@@ -17,12 +17,21 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Initialize database
+// Initialize database asynchronously (don't block startup)
+let dbInitialized = false;
 initDatabase().then(() => {
   console.log('Database initialization complete');
+  dbInitialized = true;
 }).catch(err => {
   console.error('Database initialization failed:', err);
-  process.exit(1);
+});
+
+// Middleware to ensure DB is ready
+app.use((req, res, next) => {
+  if (!dbInitialized && !req.path.includes('/health')) {
+    return res.status(503).json({ error: 'Database initializing, please retry' });
+  }
+  next();
 });
 
 // Routes
@@ -36,8 +45,11 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ VisualSQL Backend running on http://localhost:${PORT}`);
-});
+// Only listen when not on Vercel (for local development)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`✅ VisualSQL Backend running on http://localhost:${PORT}`);
+  });
+}
 
 export default app;
