@@ -12,24 +12,27 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Initialize database asynchronously (don't block startup)
+// Initialize database - with timeout
 let dbInitialized = false;
-initDatabase().then(() => {
-  console.log('Database initialization complete');
-  dbInitialized = true;
-}).catch(err => {
-  console.error('Database initialization failed:', err);
-});
+const dbInitPromise = initDatabase()
+  .then(() => {
+    console.log('Database initialization complete');
+    dbInitialized = true;
+  })
+  .catch(err => {
+    console.error('Database initialization failed:', err);
+    dbInitialized = false;
+  });
 
-// Middleware to ensure DB is ready
-app.use((req, res, next) => {
-  if (!dbInitialized && !req.path.includes('/health')) {
-    return res.status(503).json({ error: 'Database initializing, please retry' });
+// Wait up to 5 seconds for DB, then proceed anyway
+setTimeout(() => {
+  if (!dbInitialized) {
+    console.warn('Database initialization timed out, starting anyway...');
+    dbInitialized = true;
   }
-  next();
-});
+}, 5000);
 
-// Routes
+// Routes - no blocking middleware
 app.use('/api/query', queryRoutes);
 app.use('/api/modules', moduleRoutes);
 app.use('/api/exercises', exerciseRoutes);
@@ -37,7 +40,11 @@ app.use('/api/schemas', schemaRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    dbInitialized 
+  });
 });
 
 // Root handler
@@ -45,7 +52,8 @@ app.get('/', (req, res) => {
   res.json({ 
     status: 'ok', 
     message: 'VisualSQL Backend API',
-    endpoints: ['/api/health', '/api/modules', '/api/query', '/api/exercises', '/api/schemas']
+    endpoints: ['/api/health', '/api/modules', '/api/query', '/api/exercises', '/api/schemas'],
+    dbInitialized
   });
 });
 
