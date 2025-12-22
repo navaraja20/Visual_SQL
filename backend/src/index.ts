@@ -40,6 +40,21 @@ app.use('/api/modules', moduleRoutes);
 app.use('/api/exercises', exerciseRoutes);
 app.use('/api/schemas', schemaRoutes);
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'VisualSQL API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      query: '/api/query',
+      modules: '/api/modules',
+      exercises: '/api/exercises',
+      schemas: '/api/schemas'
+    }
+  });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

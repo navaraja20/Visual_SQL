@@ -1,4 +1,5 @@
 import initSqlJs, { Database } from 'sql.js';
+import fs from 'fs';
 
 let db: Database | null = null;
 let SQL: any = null;

@@ -14,8 +14,6 @@ import {
 } from '../types/visualization.types';
 
 export class QueryExecutor {
-  private dbPromise = getDatabase();
-  
   private getTableFromStep(step: VisualizationStep): TableData | undefined {
     if ('resultTable' in step && step.resultTable) {
       return step.resultTable;
@@ -303,7 +301,7 @@ export class QueryExecutor {
   }
   
   private async createScanStep(tables: string[]): Promise<ScanStep> {
-    const db = await this.dbPromise;
+    const db = await getDatabase();
     const tableDataList: TableData[] = [];
     
     for (const tableName of tables) {
@@ -324,7 +322,7 @@ export class QueryExecutor {
   
   private async createJoinStep(leftTable: TableData, join: any): Promise<JoinStep> {
     try {
-      const db = await this.dbPromise;
+      const db = await getDatabase();
       const rightTableName = join.table;
       const result = db.exec(`SELECT * FROM ${rightTableName}`);
       const rightRows = this.convertSqlJsResultToRows(result);
@@ -430,7 +428,7 @@ export class QueryExecutor {
   }
   
   private async createFilterStep(table: TableData, condition: string, fullQuery: string): Promise<FilterStep> {
-    const db = await this.dbPromise;
+    const db = await getDatabase();
     // Build a query to get filtered results
     const tableName = table.name;
     let baseQuery = `SELECT * FROM ${tableName}`;
@@ -469,7 +467,7 @@ export class QueryExecutor {
   }
   
   private async createGroupByStep(table: TableData, groupByColumns: string[], aggregates: string[], fullQuery: string): Promise<GroupByStep> {
-    const db = await this.dbPromise;
+    const db = await getDatabase();
     const result = db.exec(fullQuery.split(/ORDER\s+BY|LIMIT/i)[0]);
     const resultRows = this.convertSqlJsResultToRows(result);
     
@@ -575,7 +573,7 @@ export class QueryExecutor {
   }
   
   private async createOrderByStep(table: TableData, orderBy: string, fullQuery: string): Promise<OrderByStep> {
-    const db = await this.dbPromise;
+    const db = await getDatabase();
     const result = db.exec(fullQuery.split(/LIMIT/i)[0]);
     const resultRows = this.convertSqlJsResultToRows(result);
     
@@ -600,7 +598,7 @@ export class QueryExecutor {
   }
   
   private async createLimitStep(table: TableData, limit: number, offset: number = 0, fullQuery: string): Promise<LimitStep> {
-    const db = await this.dbPromise;
+    const db = await getDatabase();
     const result = db.exec(fullQuery);
     const resultRows = this.convertSqlJsResultToRows(result);
     
@@ -618,7 +616,7 @@ export class QueryExecutor {
   }
   
   private async executeInsertQuery(query: string, steps: VisualizationStep[]): Promise<void> {
-    const db = await this.dbPromise;
+    const db = await getDatabase();
     // Execute the insert
     db.run(query);
     
@@ -642,7 +640,7 @@ export class QueryExecutor {
   }
   
   private async executeUpdateQuery(query: string, steps: VisualizationStep[]): Promise<void> {
-    const db = await this.dbPromise;
+    const db = await getDatabase();
     const tableMatch = query.match(/UPDATE\s+(\w+)/i);
     if (tableMatch) {
       const tableName = tableMatch[1];
@@ -666,7 +664,7 @@ export class QueryExecutor {
   }
   
   private async executeDeleteQuery(query: string, steps: VisualizationStep[]): Promise<void> {
-    const db = await this.dbPromise;
+    const db = await getDatabase();
     const tableMatch = query.match(/DELETE\s+FROM\s+(\w+)/i);
     if (tableMatch) {
       const tableName = tableMatch[1];
