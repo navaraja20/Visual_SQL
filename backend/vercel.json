@@ -6,20 +6,6 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
-    {
-      "src": "/api/query/execute",
-      "dest": "/api/query"
-    },
-    {
-      "src": "/api/modules/([^/]+)",
-      "dest": "/api/modules/$1"
-    },
-    {
-      "src": "/api/(health|modules|exercises|schemas|query)",
-      "dest": "/api/$1"
-    }
-  ],
   "env": {
     "NODE_ENV": "production"
   }
