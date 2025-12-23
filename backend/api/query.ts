@@ -1,13 +1,26 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import initSqlJs from 'sql.js';
+import { QueryExecutor } from '../src/services/query-executor.service';
+import { initDatabase } from '../src/database/init';
 
-let SQL: any = null;
+let dbInitialized = false;
+let initPromise: Promise<void> | null = null;
 
-async function initDB() {
-  if (!SQL) {
-    SQL = await initSqlJs();
+async function ensureDatabaseInitialized() {
+  if (!dbInitialized) {
+    if (!initPromise) {
+      initPromise = initDatabase()
+        .then(() => {
+          dbInitialized = true;
+          console.log('✅ Database initialized for serverless');
+        })
+        .catch(err => {
+          console.error('❌ Database initialization failed:', err);
+          initPromise = null;
+          throw err;
+        });
+    }
+    await initPromise;
   }
-  return SQL;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -25,42 +38,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    // Ensure database is initialized
+    await ensureDatabaseInitialized();
+
     const { query, schema } = req.body;
 
     if (!query) {
       return res.status(400).json({ error: 'Query is required' });
     }
 
-    const sql = await initDB();
-    const db = new sql.Database();
+    const queryExecutor = new QueryExecutor();
+    const result = await queryExecutor.execute(query, schema);
 
-    // Execute schema setup if provided
-    if (schema) {
-      db.exec(schema);
-    }
-
-    // Execute the query
-    const result = db.exec(query);
-    
-    db.close();
-
-    if (result.length === 0) {
-      return res.status(200).json({
-        columns: [],
-        values: [],
-        rowCount: 0
-      });
-    }
-
-    return res.status(200).json({
-      columns: result[0].columns,
-      values: result[0].values,
-      rowCount: result[0].values.length
-    });
+    return res.status(200).json(result);
 
   } catch (error: any) {
+    console.error('Query execution error:', error);
     return res.status(400).json({ 
-      error: error.message || 'Query execution failed' 
+      error: error.message || 'Query execution failed',
+      steps: [],
+      finalResult: { name: 'error', rows: [] },
+      executionTime: 0
     });
   }
 }
